@@ -10,8 +10,7 @@ app.get("/", (req, res) => {
   res.send("Server working 🔥");
 });
 app.use("/tasks", TaskRouter);
-app.use(cors());
-app.use(express.urlencoded({ extended: true }));
+app.use(cors())
 
 const port = process.env.PORT || 5000;
 
