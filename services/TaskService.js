@@ -22,29 +22,27 @@ const createTask = async (req, res) => {
 };
 
 const getTask = async (req, res) => {
-    try {
-      const tasks = await Task.find();
-  
-      
-      const groupTasks = tasks.reduce((acc, task) => {
-        const day = moment(task.task_day).format("dddd");
+  try {
+    const tasks = await Task.find();
+
+    const groupTasks = tasks.reduce((acc, task) => {
+        const day = moment(task.task_day).format("dddd"); // Get the day of the week
         if (!acc[day]) {
           acc[day] = [];
         }
-        acc[day].push(task);
+        acc[day].push(task); 
         return acc;
       }, {});
   
-     
+
       const result = Object.keys(groupTasks).map((day) => ({
-        day, // Use the day of the week
-        tasks: groupTasks[day],
+        day, 
+        tasks: groupTasks[day], 
       }));
-  
-      return result 
-    } catch (error) {
-        throw new Error(error);
-    }
+    return groupTasks;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 module.exports = { createTask, getTask };

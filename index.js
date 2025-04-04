@@ -4,13 +4,13 @@ const dbConnect = require("./db");
 const cors = require("cors");
 const app = express();
 const TaskRouter = require("./routes/TaskRouter");
+app.use(cors())
 app.use(express.json());
 dbConnect();
 app.get("/", (req, res) => {
   res.send("Server working 🔥");
 });
 app.use("/tasks", TaskRouter);
-app.use(cors())
 
 const port = process.env.PORT || 5000;
 
