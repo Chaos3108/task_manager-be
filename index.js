@@ -1,6 +1,7 @@
 const express = require("express");
 require("dotenv").config();
 const dbConnect = require("./db");
+const cors = require("cors");
 const app = express();
 const TaskRouter = require("./routes/TaskRouter");
 app.use(express.json());
@@ -9,6 +10,8 @@ app.get("/", (req, res) => {
   res.send("Server working 🔥");
 });
 app.use("/tasks", TaskRouter);
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 
 const port = process.env.PORT || 5000;
 
