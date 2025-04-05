@@ -24,25 +24,32 @@ const createTask = async (req, res) => {
 const getTask = async (req, res) => {
   try {
     const tasks = await Task.find();
-
     const groupTasks = tasks.reduce((acc, task) => {
-        const day = moment(task.task_day).format("dddd"); // Get the day of the week
-        if (!acc[day]) {
-          acc[day] = [];
-        }
-        acc[day].push(task); 
-        return acc;
-      }, {});
-  
+      const day = moment(task.task_day).format("dddd");
+      if (!acc[day]) {
+        acc[day] = [];
+      }
+      acc[day].push(task);
+      return acc;
+    }, {});
 
-      const result = Object.keys(groupTasks).map((day) => ({
-        day, 
-        tasks: groupTasks[day], 
-      }));
+    const result = Object.keys(groupTasks).map((day) => ({
+      day,
+      tasks: groupTasks[day],
+    }));
     return groupTasks;
   } catch (error) {
     throw new Error(error);
   }
 };
 
-module.exports = { createTask, getTask };
+const getTasksByDate = async (date) => {
+  try {
+    const tasksByday = await Task.find({ task_day: date });
+    return tasksByday
+  } catch (error) {
+    throw new Error("Error in getting Tasks", error)
+  }
+};
+
+module.exports = { createTask, getTask, getTasksByDate };

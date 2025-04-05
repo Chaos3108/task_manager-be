@@ -30,4 +30,25 @@ const getTask = async (req, res) => {
   }
 };
 
-module.exports = { createTask, getTask };
+const getTaskbyDate = async (req, res) => {
+  try {
+    const { date } = req.query;
+    if (!date) {
+      return res
+        .status(400)
+        .json({ error: "Date query parameter is required" });
+    }
+    const tasks = await TaskService.getTasksByDate(date);
+    if (!tasks) {
+      return res.status(404).json({ message: "No tasks found" });
+    }
+    return res
+      .status(200)
+      .json({ message: "Tasks retrieved successfully", tasks });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
+  }
+};
+module.exports = { createTask, getTask, getTaskbyDate };
